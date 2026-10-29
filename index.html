@@ -1,0 +1,1761 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NEXUS TECH | Premium Electronics Store</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Font Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        brandDark: '#0A2647',
+                        brandTech: '#00B4D8',
+                        brandHover: '#0096B4',
+                        brandBg: '#F4F7FA',
+                        brandSurface: '#FFFFFF',
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body { font-family: 'Inter', sans-serif; background-color: #F4F7FA; color: #1e293b; }
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+        .custom-shadow { box-shadow: 0 10px 25px -5px rgba(10, 38, 71, 0.08); }
+        .glass-header { background: rgba(10, 38, 71, 0.95); backdrop-filter: blur(10px); }
+    </style>
+</head>
+<body class="flex flex-col min-h-screen">
+
+    <!-- TOP ANNOUNCEMENT BAR -->
+    <div class="bg-brandTech text-brandDark text-xs md:text-sm font-semibold py-2 px-4 text-center tracking-wide">
+        ⚡ FREE NEXT-DAY SHIPPING ON ORDERS OVER $500 | USE CODE <span class="underline">NEXUS2026</span> FOR 10% OFF ⚡
+    </div>
+
+    <!-- MAIN HEADER / NAVIGATION -->
+    <header class="glass-header text-white sticky top-0 z-40 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-20 gap-4">
+                
+                <!-- Logo -->
+                <div class="flex items-center gap-3 cursor-pointer" onclick="navigateTo('home')">
+                    <div class="w-10 h-10 rounded-xl bg-brandTech flex items-center justify-center text-brandDark text-2xl font-black shadow-md">
+                        N
+                    </div>
+                    <div>
+                        <span class="text-2xl font-black tracking-tight text-white">NEXUS<span class="text-brandTech">TECH</span></span>
+                        <span class="block text-[10px] text-gray-300 tracking-widest uppercase font-semibold">Innovation Hub</span>
+                    </div>
+                </div>
+
+                <!-- Search Bar (Desktop) -->
+                <div class="hidden md:flex flex-1 max-w-md relative">
+                    <input type="text" id="searchInput" oninput="handleSearchInput(event)" placeholder="Search iPhone, MacBook, Headphones..." 
+                        class="w-full pl-10 pr-10 py-2.5 rounded-full bg-slate-800/80 text-white placeholder-gray-400 text-sm border border-slate-700 focus:outline-none focus:border-brandTech transition-all">
+                    <i class="fa-solid fa-magnifying-glass absolute left-3.5 top-3.5 text-gray-400 text-sm"></i>
+                    <button onclick="clearSearch()" id="searchClearBtn" class="hidden absolute right-3 top-3 text-gray-400 hover:text-white text-xs">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                    </button>
+                    <!-- Search Autocomplete Dropdown -->
+                    <div id="searchResultsDropdown" class="hidden absolute left-0 right-0 top-12 bg-white text-slate-800 rounded-xl shadow-2xl border border-gray-100 max-h-80 overflow-y-auto z-50 p-2"></div>
+                </div>
+
+                <!-- Navigation Links & Actions -->
+                <div class="flex items-center gap-2 sm:gap-6">
+                    <nav class="hidden lg:flex items-center space-x-6 text-sm font-medium">
+                        <button onclick="navigateTo('home')" class="hover:text-brandTech transition-colors py-1">Home</button>
+                        <button onclick="navigateTo('shop')" class="hover:text-brandTech transition-colors py-1">Shop Catalog</button>
+                        <button onclick="navigateTo('about')" class="hover:text-brandTech transition-colors py-1">About Us</button>
+                        <button onclick="navigateTo('contact')" class="hover:text-brandTech transition-colors py-1">Contact</button>
+                    </nav>
+
+                    <div class="flex items-center gap-3 border-l border-slate-700 pl-4">
+                        <!-- Wishlist Icon -->
+                        <button onclick="navigateTo('account', 'wishlist')" class="relative p-2 text-gray-300 hover:text-brandTech transition-colors rounded-full hover:bg-slate-800" title="Wishlist">
+                            <i class="fa-regular fa-heart text-xl"></i>
+                            <span id="wishlistBadge" class="absolute -top-1 -right-1 bg-red-500 text-white text-[10px] font-bold rounded-full w-5 h-5 flex items-center justify-center border-2 border-brandDark">0</span>
+                        </button>
+
+                        <!-- Cart Icon -->
+                        <button onclick="navigateTo('cart')" class="relative p-2 text-gray-300 hover:text-brandTech transition-colors rounded-full hover:bg-slate-800" title="Shopping Cart">
+                            <i class="fa-solid fa-cart-shopping text-xl"></i>
+                            <span id="cartBadge" class="absolute -top-1 -right-1 bg-brandTech text-brandDark font-bold text-[10px] rounded-full w-5 h-5 flex items-center justify-center border-2 border-brandDark">0</span>
+                        </button>
+
+                        <!-- Account / Auth Button -->
+                        <div id="authNavContainer" class="flex items-center">
+                            <!-- Injected by JS based on user logged status -->
+                        </div>
+
+                        <!-- Mobile Menu Button -->
+                        <button onclick="toggleMobileMenu()" class="lg:hidden p-2 text-gray-300 hover:text-white">
+                            <i class="fa-solid fa-bars text-xl"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Mobile Search Bar -->
+            <div class="pb-3 md:hidden relative">
+                <input type="text" id="searchInputMobile" oninput="handleSearchInput(event)" placeholder="Search gadgets..." 
+                    class="w-full pl-9 pr-8 py-2 rounded-lg bg-slate-800 text-white placeholder-gray-400 text-sm border border-slate-700">
+                <i class="fa-solid fa-magnifying-glass absolute left-3 top-2.5 text-gray-400 text-xs"></i>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu Dropdown -->
+        <div id="mobileMenu" class="hidden lg:hidden bg-slate-900 border-t border-slate-800 px-4 pt-3 pb-6 space-y-3 text-sm">
+            <button onclick="navigateTo('home'); toggleMobileMenu()" class="block w-full text-left py-2 hover:text-brandTech font-medium">Home</button>
+            <button onclick="navigateTo('shop'); toggleMobileMenu()" class="block w-full text-left py-2 hover:text-brandTech font-medium">Shop Products</button>
+            <button onclick="navigateTo('about'); toggleMobileMenu()" class="block w-full text-left py-2 hover:text-brandTech font-medium">About Us</button>
+            <button onclick="navigateTo('contact'); toggleMobileMenu()" class="block w-full text-left py-2 hover:text-brandTech font-medium">Contact Us</button>
+            <button onclick="navigateTo('account'); toggleMobileMenu()" class="block w-full text-left py-2 hover:text-brandTech font-medium border-t border-slate-800 pt-3">My Account & Orders</button>
+        </div>
+    </header>
+
+    <!-- NOTIFICATION TOAST CONTAINER -->
+    <div id="toastContainer" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 pointer-events-none"></div>
+
+    <!-- MAIN VIEW CONTAINER -->
+    <main id="app" class="flex-grow">
+        <!-- Dynamic SPA pages injected via JS rendering logic -->
+    </main>
+
+    <!-- QUICK PRODUCT DETAIL MODAL -->
+    <div id="productModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-3xl w-full max-h-[90vh] overflow-y-auto shadow-2xl relative animate-fade-in" onclick="event.stopPropagation()">
+            <button onclick="closeProductModal()" class="absolute top-4 right-4 z-10 w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-gray-600 hover:bg-slate-200">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div id="modalContent" class="p-6 md:p-8">
+                <!-- Injected JS Content -->
+            </div>
+        </div>
+    </div>
+
+    <!-- AUTHENTICATION MODAL -->
+    <div id="authModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4" onclick="closeAuthModal()">
+        <div class="bg-white rounded-2xl max-w-md w-full p-6 sm:p-8 shadow-2xl relative" onclick="event.stopPropagation()">
+            <button onclick="closeAuthModal()" class="absolute top-4 right-4 text-gray-400 hover:text-gray-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            
+            <div class="flex border-b border-gray-200 mb-6">
+                <button id="tabLoginBtn" onclick="switchAuthTab('login')" class="flex-1 pb-3 text-center font-bold text-brandDark border-b-2 border-brandTech">Log In</button>
+                <button id="tabRegisterBtn" onclick="switchAuthTab('register')" class="flex-1 pb-3 text-center font-bold text-gray-400 border-b-2 border-transparent">Register</button>
+            </div>
+
+            <!-- Login Form -->
+            <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Email Address</label>
+                    <input type="email" id="loginEmail" required value="alex.tech@nexus.com" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-brandTech focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Password</label>
+                    <input type="password" id="loginPassword" required value="password123" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-brandTech focus:outline-none">
+                </div>
+                <div class="flex items-center justify-between text-xs">
+                    <label class="flex items-center text-slate-600"><input type="checkbox" checked class="mr-2 rounded"> Remember me</label>
+                    <a href="#" class="text-brandTech font-medium hover:underline">Forgot password?</a>
+                </div>
+                <button type="submit" class="w-full py-3 bg-brandDark text-white font-bold rounded-xl hover:bg-slate-800 transition shadow-lg">Sign In</button>
+            </form>
+
+            <!-- Register Form -->
+            <form id="registerForm" onsubmit="handleRegister(event)" class="space-y-4 hidden">
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Full Name</label>
+                    <input type="text" id="regName" required placeholder="Alex Johnson" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-brandTech focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Email Address</label>
+                    <input type="email" id="regEmail" required placeholder="alex@example.com" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-brandTech focus:outline-none">
+                </div>
+                <div>
+                    <label class="block text-xs font-bold uppercase text-slate-600 mb-1">Create Password</label>
+                    <input type="password" id="regPassword" required minlength="6" placeholder="At least 6 characters" class="w-full px-4 py-2.5 rounded-lg border border-gray-300 text-sm focus:border-brandTech focus:outline-none">
+                </div>
+                <button type="submit" class="w-full py-3 bg-brandTech text-brandDark font-bold rounded-xl hover:bg-brandHover transition shadow-lg">Create Account</button>
+            </form>
+        </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="bg-brandDark text-gray-300 border-t border-slate-800 pt-12 pb-8 mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8 mb-12">
+                <!-- Brand Info -->
+                <div class="lg:col-span-2 space-y-4">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg bg-brandTech flex items-center justify-center text-brandDark font-black">N</div>
+                        <span class="text-xl font-black text-white tracking-tight">NEXUS<span class="text-brandTech">TECH</span></span>
+                    </div>
+                    <p class="text-xs text-gray-400 leading-relaxed max-w-sm">
+                        Empowering tech enthusiasts with high-performance electronics, next-gen devices, and cutting-edge accessories. Built for performance and innovation.
+                    </p>
+                    <div class="flex gap-4 pt-2">
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-gray-300 hover:bg-brandTech hover:text-brandDark transition-all"><i class="fa-brands fa-x-twitter"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-gray-300 hover:bg-brandTech hover:text-brandDark transition-all"><i class="fa-brands fa-facebook-f"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-gray-300 hover:bg-brandTech hover:text-brandDark transition-all"><i class="fa-brands fa-instagram"></i></a>
+                        <a href="#" class="w-9 h-9 rounded-full bg-slate-800 flex items-center justify-center text-gray-300 hover:bg-brandTech hover:text-brandDark transition-all"><i class="fa-brands fa-github"></i></a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Categories</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><a href="#" onclick="filterByCategory('Smartphones'); return false;" class="hover:text-brandTech">Smartphones</a></li>
+                        <li><a href="#" onclick="filterByCategory('Laptops & Tablets'); return false;" class="hover:text-brandTech">Laptops & Tablets</a></li>
+                        <li><a href="#" onclick="filterByCategory('Audio & Wearables'); return false;" class="hover:text-brandTech">Audio & Wearables</a></li>
+                        <li><a href="#" onclick="filterByCategory('Accessories'); return false;" class="hover:text-brandTech">Accessories</a></li>
+                    </ul>
+                </div>
+
+                <!-- Support -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Customer Care</h4>
+                    <ul class="space-y-2 text-xs text-gray-400">
+                        <li><button onclick="navigateTo('contact')" class="hover:text-brandTech">Help Center & FAQ</button></li>
+                        <li><button onclick="navigateTo('account', 'orders')" class="hover:text-brandTech">Track Order</button></li>
+                        <li><button onclick="navigateTo('contact')" class="hover:text-brandTech">Returns & Refunds</button></li>
+                        <li><button onclick="navigateTo('about')" class="hover:text-brandTech">Warranty Info</button></li>
+                    </ul>
+                </div>
+
+                <!-- Newsletter -->
+                <div>
+                    <h4 class="text-sm font-bold text-white uppercase tracking-wider mb-4">Stay Connected</h4>
+                    <p class="text-xs text-gray-400 mb-3">Subscribe for exclusive tech drop alerts & coupons.</p>
+                    <form onsubmit="event.preventDefault(); showToast('Subscribed successfully!', 'success');" class="space-y-2">
+                        <input type="email" placeholder="Enter your email" required class="w-full px-3 py-2 text-xs rounded bg-slate-800 border border-slate-700 text-white focus:outline-none focus:border-brandTech">
+                        <button type="submit" class="w-full py-2 bg-brandTech text-brandDark font-bold text-xs rounded hover:bg-brandHover transition">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+
+            <div class="border-t border-slate-800 pt-6 flex flex-col md:flex-row items-center justify-between text-xs text-gray-500 gap-4">
+                <p>&copy; 2026 NEXUS TECH Inc. All rights reserved. Portfolio Internship Project.</p>
+                <div class="flex items-center gap-4 text-lg">
+                    <i class="fa-brands fa-cc-visa hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-mastercard hover:text-white transition"></i>
+                    <i class="fa-brands fa-cc-paypal hover:text-white transition"></i>
+                    <i class="fa-brands fa-apple-pay hover:text-white transition"></i>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT APP LOGIC -->
+    <script>
+        /* ==========================================================================
+           1. PRODUCT CATALOG DATA & INITIAL STATE
+           ========================================================================== */
+        const PRODUCTS = [
+            // Smartphones
+            {
+                id: 'p1',
+                name: 'Apple iPhone 15 Pro Max',
+                category: 'Smartphones',
+                brand: 'Apple',
+                price: 1199,
+                originalPrice: 1299,
+                rating: 4.9,
+                reviewsCount: 342,
+                image: 'https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=600&q=80',
+                stock: 12,
+                isFeatured: true,
+                isDeal: true,
+                specs: ['A17 Pro Chip', '256GB Storage', '6.7" Super Retina XDR', 'Titanium Design', '48MP Main Camera']
+            },
+            {
+                id: 'p2',
+                name: 'Samsung Galaxy S24 Ultra',
+                category: 'Smartphones',
+                brand: 'Samsung',
+                price: 1299,
+                originalPrice: 1399,
+                rating: 4.8,
+                reviewsCount: 280,
+                image: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?auto=format&fit=crop&w=600&q=80',
+                stock: 8,
+                isFeatured: true,
+                isDeal: true,
+                specs: ['Snapdragon 8 Gen 3', '512GB Storage', 'S-Pen Included', '200MP Camera', 'Galaxy AI Features']
+            },
+            {
+                id: 'p3',
+                name: 'Google Pixel 8 Pro',
+                category: 'Smartphones',
+                brand: 'Google',
+                price: 899,
+                originalPrice: 999,
+                rating: 4.7,
+                reviewsCount: 156,
+                image: 'https://images.unsplash.com/photo-1598327105666-5b89351aff97?auto=format&fit=crop&w=600&q=80',
+                stock: 15,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['Google Tensor G3', '128GB Storage', 'Best-in-class AI Photo Editing', '6.7" OLED Display']
+            },
+            {
+                id: 'p4',
+                name: 'OnePlus 12',
+                category: 'Smartphones',
+                brand: 'OnePlus',
+                price: 799,
+                originalPrice: 849,
+                rating: 4.6,
+                reviewsCount: 98,
+                image: 'https://images.unsplash.com/photo-1565849904461-04a58ad377e0?auto=format&fit=crop&w=600&q=80',
+                stock: 5,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['Snapdragon 8 Gen 3', '16GB RAM / 512GB', '100W SUPERVOOC Fast Charge', 'Hasselblad Optics']
+            },
+            {
+                id: 'p5',
+                name: 'Xiaomi 14 Ultra',
+                category: 'Smartphones',
+                brand: 'Xiaomi',
+                price: 949,
+                originalPrice: 1049,
+                rating: 4.5,
+                reviewsCount: 64,
+                image: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?auto=format&fit=crop&w=600&q=80',
+                stock: 9,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['Leica Quad Camera', '1-inch Sensor', 'Snapdragon 8 Gen 3', '90W Fast Charging']
+            },
+
+            // Laptops & Tablets
+            {
+                id: 'p6',
+                name: 'Apple MacBook Pro 16" M3 Max',
+                category: 'Laptops & Tablets',
+                brand: 'Apple',
+                price: 2499,
+                originalPrice: 2699,
+                rating: 4.9,
+                reviewsCount: 512,
+                image: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?auto=format&fit=crop&w=600&q=80',
+                stock: 7,
+                isFeatured: true,
+                isDeal: true,
+                specs: ['Apple M3 Max Chip', '36GB Unified Memory', '1TB SSD', 'Liquid Retina XDR', '22-hr Battery']
+            },
+            {
+                id: 'p7',
+                name: 'Dell XPS 15 OLED',
+                category: 'Laptops & Tablets',
+                brand: 'Dell',
+                price: 1899,
+                originalPrice: 2099,
+                rating: 4.7,
+                reviewsCount: 189,
+                image: 'https://images.unsplash.com/photo-1593642632823-8f785ba67e45?auto=format&fit=crop&w=600&q=80',
+                stock: 10,
+                isFeatured: true,
+                isDeal: false,
+                specs: ['Intel Core i9 13th Gen', 'NVIDIA RTX 4060', '32GB RAM', '1TB NVMe SSD', '3.5K OLED Touch']
+            },
+            {
+                id: 'p8',
+                name: 'HP Spectre x360 2-in-1',
+                category: 'Laptops & Tablets',
+                brand: 'HP',
+                price: 1449,
+                originalPrice: 1599,
+                rating: 4.6,
+                reviewsCount: 110,
+                image: 'https://images.unsplash.com/photo-1544731612-de7f96afe55f?auto=format&fit=crop&w=600&q=80',
+                stock: 6,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['Intel Core Ultra 7', '16GB LPDDR5X', '1TB SSD', '14" 2.8K OLED', 'Stylus Included']
+            },
+            {
+                id: 'p9',
+                name: 'Apple iPad Pro 12.9" M2',
+                category: 'Laptops & Tablets',
+                brand: 'Apple',
+                price: 1099,
+                originalPrice: 1199,
+                rating: 4.8,
+                reviewsCount: 230,
+                image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80',
+                stock: 14,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['Apple M2 Chip', 'Liquid Retina XDR with ProMotion', '256GB Storage', 'Apple Pencil 2 Hover']
+            },
+            {
+                id: 'p10',
+                name: 'Microsoft Surface Pro 9',
+                category: 'Laptops & Tablets',
+                brand: 'Microsoft',
+                price: 999,
+                originalPrice: 1099,
+                rating: 4.5,
+                reviewsCount: 92,
+                image: 'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?auto=format&fit=crop&w=600&q=80',
+                stock: 11,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['13th Gen Intel Core i7', '16GB RAM', '256GB SSD', '13" PixelSense Flow Display']
+            },
+
+            // Audio & Wearables
+            {
+                id: 'p11',
+                name: 'Sony WH-1000XM5 Wireless Headphones',
+                category: 'Audio & Wearables',
+                brand: 'Sony',
+                price: 398,
+                originalPrice: 448,
+                rating: 4.9,
+                reviewsCount: 840,
+                image: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?auto=format&fit=crop&w=600&q=80',
+                stock: 25,
+                isFeatured: true,
+                isDeal: true,
+                specs: ['Industry-Leading Noise Cancellation', '30-Hour Battery Life', 'Speak-to-Chat', 'Multipoint Connection']
+            },
+            {
+                id: 'p12',
+                name: 'Apple AirPods Pro (2nd Gen)',
+                category: 'Audio & Wearables',
+                brand: 'Apple',
+                price: 249,
+                originalPrice: 279,
+                rating: 4.8,
+                reviewsCount: 1200,
+                image: 'https://images.unsplash.com/photo-1600294037681-c80b4cb5b434?auto=format&fit=crop&w=600&q=80',
+                stock: 30,
+                isFeatured: true,
+                isDeal: false,
+                specs: ['H2 Chip Active Noise Cancellation', 'Adaptive Audio', 'MagSafe Charging Case (USB-C)', 'Spatial Audio']
+            },
+            {
+                id: 'p13',
+                name: 'Apple Watch Series 9 GPS',
+                category: 'Audio & Wearables',
+                brand: 'Apple',
+                price: 399,
+                originalPrice: 429,
+                rating: 4.7,
+                reviewsCount: 410,
+                image: 'https://images.unsplash.com/photo-1508685096489-7aacd43bd3b1?auto=format&fit=crop&w=600&q=80',
+                stock: 18,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['S9 SiP with Double Tap Gesture', 'Brighter Always-On Display', 'ECG & Blood Oxygen', '45mm Aluminum']
+            },
+            {
+                id: 'p14',
+                name: 'Bose SoundLink Flex Bluetooth Speaker',
+                category: 'Audio & Wearables',
+                brand: 'Bose',
+                price: 149,
+                originalPrice: 169,
+                rating: 4.6,
+                reviewsCount: 175,
+                image: 'https://images.unsplash.com/photo-1545454675-3531b543be5d?auto=format&fit=crop&w=600&q=80',
+                stock: 15,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['IP67 Waterproof & Dustproof', 'PositionIQ Technology', 'Up to 12 Hours Battery', 'Rugged Utility Strap']
+            },
+            {
+                id: 'p15',
+                name: 'Samsung Galaxy Fit3 Smartband',
+                category: 'Audio & Wearables',
+                brand: 'Samsung',
+                price: 59,
+                originalPrice: 79,
+                rating: 4.4,
+                reviewsCount: 88,
+                image: 'https://images.unsplash.com/photo-1575311373937-040b8e1fd5b6?auto=format&fit=crop&w=600&q=80',
+                stock: 22,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['1.6" AMOLED Display', '13-day Battery Life', '100+ Workout Tracking Modes', 'Sleep & HR Monitoring']
+            },
+
+            // Accessories
+            {
+                id: 'p16',
+                name: 'Anker 65W GaN Fast Charger & Cable',
+                category: 'Accessories',
+                brand: 'Anker',
+                price: 49,
+                originalPrice: 59,
+                rating: 4.8,
+                reviewsCount: 310,
+                image: 'https://images.unsplash.com/photo-1583863788434-e58a36330cf0?auto=format&fit=crop&w=600&q=80',
+                stock: 40,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['GaNPrime Tech', '3-Port Fast Charge (2 USB-C, 1 USB-A)', 'Includes 6ft Braided Cable', 'Compact Folding Plug']
+            },
+            {
+                id: 'p17',
+                name: '20000mAh Power Bank 22.5W',
+                category: 'Accessories',
+                brand: 'Anker',
+                price: 39,
+                originalPrice: 49,
+                rating: 4.7,
+                reviewsCount: 220,
+                image: 'https://images.unsplash.com/photo-1609592424109-dd9892f1b177?auto=format&fit=crop&w=600&q=80',
+                stock: 35,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['20,000mAh High Capacity', 'Trickle-Charging Mode', 'Dual Input/Output Ports', 'LED Power Display']
+            },
+            {
+                id: 'p18',
+                name: 'MagSafe Premium Leather Phone Case',
+                category: 'Accessories',
+                brand: 'Apple',
+                price: 59,
+                originalPrice: 69,
+                rating: 4.5,
+                reviewsCount: 140,
+                image: 'https://images.unsplash.com/photo-1601593378433-875c754d9b4b?auto=format&fit=crop&w=600&q=80',
+                stock: 20,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['Specially Tanned European Leather', 'Built-in MagSafe Magnets', 'Soft Microfiber Interior']
+            },
+            {
+                id: 'p19',
+                name: 'Tempered Glass Screen Protector 2-Pack',
+                category: 'Accessories',
+                brand: 'Generic',
+                price: 19,
+                originalPrice: 25,
+                rating: 4.6,
+                reviewsCount: 520,
+                image: 'https://images.unsplash.com/photo-1592899677977-9c10ca588bbd?auto=format&fit=crop&w=600&q=80',
+                stock: 60,
+                isFeatured: false,
+                isDeal: false,
+                specs: ['9H Hardness Scratch Resistance', 'Auto-Alignment Tray Included', 'Oleophobic Anti-Fingerprint Coating']
+            },
+            {
+                id: 'p20',
+                name: 'Satechi USB-C Multi-port Adapter V2',
+                category: 'Accessories',
+                brand: 'Satechi',
+                price: 79,
+                originalPrice: 89,
+                rating: 4.8,
+                reviewsCount: 115,
+                image: 'https://images.unsplash.com/photo-1544244015-0df4b3ffc6b0?auto=format&fit=crop&w=600&q=80',
+                stock: 15,
+                isFeatured: false,
+                isDeal: true,
+                specs: ['4K HDMI 60Hz', 'USB-C Pass-through Charging', 'Gigabit Ethernet', 'SD/Micro SD Card Readers']
+            }
+        ];
+
+        // Global State Management
+        let appState = {
+            currentView: 'home',
+            subTab: null,
+            cart: JSON.parse(localStorage.getItem('nexus_cart')) || [
+                { productId: 'p1', quantity: 1 },
+                { productId: 'p11', quantity: 1 }
+            ],
+            wishlist: JSON.parse(localStorage.getItem('nexus_wishlist')) || ['p2', 'p6'],
+            user: JSON.parse(localStorage.getItem('nexus_user')) || {
+                name: 'Alex Johnson',
+                email: 'alex.tech@nexus.com',
+                phone: '+1 (555) 019-2834',
+                savedAddress: '742 Evergreen Terrace, Tech Valley, CA 94016',
+                isLoggedIn: true
+            },
+            orders: JSON.parse(localStorage.getItem('nexus_orders')) || [
+                {
+                    id: 'NEX-883921',
+                    date: '2026-03-15',
+                    status: 'Delivered',
+                    total: 1248.00,
+                    items: [
+                        { name: 'Apple iPhone 15 Pro Max', qty: 1, price: 1199 },
+                        { name: 'Anker 65W Fast Charger', qty: 1, price: 49 }
+                    ]
+                }
+            ],
+            filters: {
+                category: 'All',
+                brand: 'All',
+                minRating: 0,
+                maxPrice: 3000,
+                sortBy: 'featured'
+            },
+            appliedPromo: null
+        };
+
+        /* ==========================================================================
+           2. HELPER UTILITIES & LOCALSTORAGE PERSISTENCE
+           ========================================================================== */
+        function saveState() {
+            localStorage.setItem('nexus_cart', JSON.stringify(appState.cart));
+            localStorage.setItem('nexus_wishlist', JSON.stringify(appState.wishlist));
+            localStorage.setItem('nexus_user', JSON.stringify(appState.user));
+            localStorage.setItem('nexus_orders', JSON.stringify(appState.orders));
+            updateBadges();
+        }
+
+        function showToast(message, type = 'info') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            
+            let bgClass = 'bg-brandDark text-white';
+            let icon = 'fa-circle-info';
+            if (type === 'success') { bgClass = 'bg-emerald-600 text-white'; icon = 'fa-circle-check'; }
+            if (type === 'warning') { bgClass = 'bg-amber-500 text-white'; icon = 'fa-triangle-exclamation'; }
+
+            toast.className = `${bgClass} px-4 py-3 rounded-xl shadow-xl text-xs sm:text-sm font-medium flex items-center gap-3 transition-all transform translate-y-4 opacity-0 pointer-events-auto border border-white/10`;
+            toast.innerHTML = `<i class="fa-solid ${icon} text-lg"></i> <span>${message}</span>`;
+            
+            container.appendChild(toast);
+
+            setTimeout(() => {
+                toast.classList.remove('translate-y-4', 'opacity-0');
+            }, 10);
+
+            setTimeout(() => {
+                toast.classList.add('opacity-0', 'translate-y-2');
+                setTimeout(() => toast.remove(), 300);
+            }, 3000);
+        }
+
+        function updateBadges() {
+            const cartCount = appState.cart.reduce((sum, item) => sum + item.quantity, 0);
+            document.getElementById('cartBadge').innerText = cartCount;
+            document.getElementById('wishlistBadge').innerText = appState.wishlist.length;
+
+            // Update Auth button in navbar
+            const authContainer = document.getElementById('authNavContainer');
+            if (appState.user && appState.user.isLoggedIn) {
+                authContainer.innerHTML = `
+                    <button onclick="navigateTo('account')" class="flex items-center gap-2 bg-slate-800 hover:bg-slate-700 px-3 py-1.5 rounded-full text-xs font-semibold text-white transition">
+                        <i class="fa-solid fa-user-gear text-brandTech"></i>
+                        <span class="hidden sm:inline">${appState.user.name.split(' ')[0]}</span>
+                    </button>
+                `;
+            } else {
+                authContainer.innerHTML = `
+                    <button onclick="openAuthModal('login')" class="bg-brandTech text-brandDark hover:bg-brandHover px-4 py-1.5 rounded-full text-xs font-bold transition shadow-sm">
+                        Log In
+                    </button>
+                `;
+            }
+        }
+
+        function renderStars(rating) {
+            let stars = '';
+            for (let i = 1; i <= 5; i++) {
+                if (i <= Math.floor(rating)) {
+                    stars += '<i class="fa-solid fa-star text-amber-400"></i>';
+                } else if (i - 0.5 <= rating) {
+                    stars += '<i class="fa-solid fa-star-half-stroke text-amber-400"></i>';
+                } else {
+                    stars += '<i class="fa-regular fa-star text-gray-300"></i>';
+                }
+            }
+            return stars;
+        }
+
+        /* ==========================================================================
+           3. ROUTING & SPA VIEW NAVIGATION
+           ========================================================================== */
+        function navigateTo(view, subTab = null) {
+            appState.currentView = view;
+            appState.subTab = subTab;
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            renderApp();
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobileMenu');
+            menu.classList.toggle('hidden');
+        }
+
+        function filterByCategory(cat) {
+            appState.filters.category = cat;
+            navigateTo('shop');
+        }
+
+        /* ==========================================================================
+           4. RENDER SPA CONTROLLER
+           ========================================================================== */
+        function renderApp() {
+            const app = document.getElementById('app');
+            updateBadges();
+
+            switch (appState.currentView) {
+                case 'home':
+                    app.innerHTML = renderHomePage();
+                    break;
+                case 'shop':
+                    app.innerHTML = renderShopPage();
+                    break;
+                case 'cart':
+                    app.innerHTML = renderCartPage();
+                    break;
+                case 'checkout':
+                    app.innerHTML = renderCheckoutPage();
+                    break;
+                case 'account':
+                    app.innerHTML = renderAccountPage();
+                    break;
+                case 'about':
+                    app.innerHTML = renderAboutPage();
+                    break;
+                case 'contact':
+                    app.innerHTML = renderContactPage();
+                    break;
+                default:
+                    app.innerHTML = renderHomePage();
+            }
+        }
+
+        /* ==========================================================================
+           5. VIEW TEMPLATES
+           ========================================================================== */
+        
+        // --- VIEW 1: HOME PAGE ---
+        function renderHomePage() {
+            const featuredProducts = PRODUCTS.filter(p => p.isFeatured);
+            const hotDeals = PRODUCTS.filter(p => p.isDeal);
+
+            return `
+                <!-- HERO BANNER -->
+                <section class="bg-gradient-to-r from-brandDark via-slate-900 to-brandDark text-white py-16 lg:py-24 relative overflow-hidden">
+                    <div class="absolute inset-0 bg-[radial-gradient(#00B4D8_1px,transparent_1px)] [background-size:24px_24px] opacity-10"></div>
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                        <div class="space-y-6 text-center lg:text-left">
+                            <span class="inline-block px-3 py-1 bg-brandTech/20 text-brandTech border border-brandTech/30 rounded-full text-xs font-bold tracking-widest uppercase">
+                                Next-Gen Tech is Here
+                            </span>
+                            <h1 class="text-4xl sm:text-5xl lg:text-6xl font-black tracking-tight leading-tight">
+                                Upgrade Your Digital <span class="text-transparent bg-clip-text bg-gradient-to-r from-brandTech to-blue-400">Ecosystem</span>
+                            </h1>
+                            <p class="text-gray-300 text-sm sm:text-base max-w-xl mx-auto lg:mx-0 leading-relaxed">
+                                Discover flagship smartphones, high-performance computing laptops, premium ANC audio devices, and smart wearables with guaranteed authenticity.
+                            </p>
+                            <div class="flex flex-wrap items-center justify-center lg:justify-start gap-4 pt-4">
+                                <button onclick="navigateTo('shop')" class="px-8 py-3.5 bg-brandTech text-brandDark hover:bg-brandHover font-bold rounded-xl shadow-lg transition-all transform hover:-translate-y-0.5">
+                                    Explore Store <i class="fa-solid fa-arrow-right ml-2"></i>
+                                </button>
+                                <button onclick="filterByCategory('Smartphones')" class="px-6 py-3.5 bg-slate-800 hover:bg-slate-700 text-white font-semibold rounded-xl border border-slate-700 transition">
+                                    View Flagships
+                                </button>
+                            </div>
+                        </div>
+                        <div class="relative flex justify-center">
+                            <div class="w-72 h-72 sm:w-96 sm:h-96 rounded-full bg-brandTech/10 absolute -top-4 blur-3xl"></div>
+                            <img src="https://images.unsplash.com/photo-1695048133142-1a20484d2569?auto=format&fit=crop&w=700&q=80" 
+                                 alt="Hero Product" 
+                                 class="relative z-10 rounded-2xl shadow-2xl object-cover max-h-96 border border-slate-700 transform hover:scale-105 transition duration-500">
+                        </div>
+                    </div>
+                </section>
+
+                <!-- PRODUCT CATEGORIES SECTION -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="flex items-center justify-between mb-8">
+                        <div>
+                            <h2 class="text-2xl font-bold text-brandDark">Featured Categories</h2>
+                            <p class="text-xs text-gray-500">Explore gear tailored for productivity and entertainment</p>
+                        </div>
+                        <button onclick="navigateTo('shop')" class="text-sm font-semibold text-brandTech hover:underline">View All Categories &rarr;</button>
+                    </div>
+
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                        ${renderCategoryCard('Smartphones', 'fa-mobile-screen-button', 'Apple iPhone, Samsung, Pixel', ['Apple iPhone', 'Samsung Galaxy', 'Google Pixel', 'OnePlus', 'Xiaomi'])}
+                        ${renderCategoryCard('Laptops & Tablets', 'fa-laptop', 'MacBooks, Dell XPS, Surface', ['MacBook', 'Dell XPS', 'HP Spectre', 'iPad', 'Surface Pro'])}
+                        ${renderCategoryCard('Audio & Wearables', 'fa-headphones', 'Sony, AirPods, Apple Watch', ['Headphones', 'Earbuds', 'Smartwatches', 'Speakers', 'Fitness Bands'])}
+                        ${renderCategoryCard('Accessories', 'fa-plug', 'GaN Chargers, Power Banks', ['Chargers & Cables', 'Power Banks', 'Phone Cases', 'Screen Protectors', 'Adapters'])}
+                    </div>
+                </section>
+
+                <!-- FEATURED PRODUCTS GRID -->
+                <section class="bg-white py-16 border-y border-gray-200">
+                    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                        <div class="flex items-center justify-between mb-8">
+                            <div>
+                                <span class="text-xs font-bold uppercase text-brandTech tracking-widest">Handpicked Tech</span>
+                                <h2 class="text-2xl font-bold text-brandDark">Top Featured Products</h2>
+                            </div>
+                            <button onclick="navigateTo('shop')" class="text-sm font-semibold text-brandTech hover:underline">See All Products &rarr;</button>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${featuredProducts.map(product => renderProductCard(product)).join('')}
+                        </div>
+                    </div>
+                </section>
+
+                <!-- HOT DEALS SECTION -->
+                <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+                    <div class="bg-gradient-to-r from-slate-900 to-brandDark rounded-3xl p-8 md:p-10 text-white relative overflow-hidden shadow-2xl">
+                        <div class="flex flex-col md:flex-row items-center justify-between gap-6 mb-8">
+                            <div>
+                                <span class="bg-red-500 text-white text-[10px] font-black uppercase px-3 py-1 rounded-full tracking-wider">Limited Time Offers</span>
+                                <h2 class="text-3xl font-extrabold mt-2">Hot Tech Deals & Discounts</h2>
+                            </div>
+                            <div id="dealTimer" class="flex gap-3 text-center">
+                                <div class="bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700"><span class="block text-xl font-black text-brandTech">08</span><span class="text-[10px] text-gray-400">HOURS</span></div>
+                                <div class="bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700"><span class="block text-xl font-black text-brandTech">42</span><span class="text-[10px] text-gray-400">MINS</span></div>
+                                <div class="bg-slate-800/80 px-3 py-2 rounded-lg border border-slate-700"><span class="block text-xl font-black text-brandTech">19</span><span class="text-[10px] text-gray-400">SECS</span></div>
+                            </div>
+                        </div>
+
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${hotDeals.slice(0, 4).map(product => renderProductCard(product, true)).join('')}
+                        </div>
+                    </div>
+                </section>
+            `;
+        }
+
+        function renderCategoryCard(title, icon, subtitle, items) {
+            return `
+                <div onclick="filterByCategory('${title}')" class="bg-white rounded-2xl p-6 border border-gray-100 hover:border-brandTech/50 custom-shadow hover:-translate-y-1 transition-all cursor-pointer group">
+                    <div class="w-12 h-12 rounded-xl bg-brandTech/10 group-hover:bg-brandTech text-brandTech group-hover:text-brandDark flex items-center justify-center text-xl transition-colors mb-4">
+                        <i class="fa-solid ${icon}"></i>
+                    </div>
+                    <h3 class="text-base font-bold text-brandDark mb-1 group-hover:text-brandTech transition">${title}</h3>
+                    <p class="text-xs text-gray-400 mb-4">${subtitle}</p>
+                    <ul class="space-y-1.5 border-t border-gray-100 pt-3">
+                        ${items.map(item => `<li class="text-xs text-gray-600 flex items-center"><span class="w-1.5 h-1.5 rounded-full bg-brandTech mr-2"></span>${item}</li>`).join('')}
+                    </ul>
+                </div>
+            `;
+        }
+
+        function renderProductCard(product, darkBg = false) {
+            const isWishlisted = appState.wishlist.includes(product.id);
+            const discount = product.originalPrice ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100) : 0;
+
+            return `
+                <div class="bg-${darkBg ? 'slate-800/90' : 'white'} rounded-2xl p-4 border border-${darkBg ? 'slate-700' : 'gray-100'} shadow-sm hover:shadow-xl transition-all flex flex-col justify-between group relative">
+                    ${discount > 0 ? `<span class="absolute top-6 left-6 z-10 bg-red-500 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase">-${discount}%</span>` : ''}
+                    
+                    <button onclick="toggleWishlist('${product.id}', event)" class="absolute top-6 right-6 z-10 w-8 h-8 rounded-full bg-slate-100/80 hover:bg-white flex items-center justify-center text-gray-500 transition">
+                        <i class="fa-${isWishlisted ? 'solid text-red-500' : 'regular'} fa-heart text-sm"></i>
+                    </button>
+
+                    <div onclick="openProductModal('${product.id}')" class="cursor-pointer">
+                        <div class="w-full h-48 rounded-xl overflow-hidden mb-4 bg-gray-50 flex items-center justify-center relative">
+                            <img src="${product.image}" alt="${product.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-300">
+                        </div>
+
+                        <span class="text-[10px] font-bold uppercase tracking-wider text-brandTech">${product.category}</span>
+                        <h3 class="text-sm font-bold ${darkBg ? 'text-white' : 'text-slate-800'} line-clamp-1 mt-1 group-hover:text-brandTech transition">${product.name}</h3>
+
+                        <div class="flex items-center gap-2 my-2 text-xs">
+                            <div class="flex">${renderStars(product.rating)}</div>
+                            <span class="text-gray-400 font-medium">(${product.reviewsCount})</span>
+                        </div>
+
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-lg font-black ${darkBg ? 'text-white' : 'text-brandDark'}">$${product.price}</span>
+                            ${product.originalPrice ? `<span class="text-xs text-gray-400 line-through">$${product.originalPrice}</span>` : ''}
+                        </div>
+                    </div>
+
+                    <div class="mt-4 pt-3 border-t border-${darkBg ? 'slate-700' : 'gray-100'} flex gap-2">
+                        <button onclick="addToCart('${product.id}')" class="flex-1 py-2 bg-brandDark text-white hover:bg-brandTech hover:text-brandDark font-bold text-xs rounded-xl transition flex items-center justify-center gap-1.5 shadow-sm">
+                            <i class="fa-solid fa-cart-plus text-xs"></i> Add to Cart
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- VIEW 2: PRODUCT LISTING / SHOP PAGE ---
+        function renderShopPage() {
+            let filtered = PRODUCTS.filter(p => {
+                const matchesCat = appState.filters.category === 'All' || p.category === appState.filters.category;
+                const matchesBrand = appState.filters.brand === 'All' || p.brand === appState.filters.brand;
+                const matchesRating = p.rating >= appState.filters.minRating;
+                const matchesPrice = p.price <= appState.filters.maxPrice;
+                return matchesCat && matchesBrand && matchesRating && matchesPrice;
+            });
+
+            // Sorting logic
+            if (appState.filters.sortBy === 'price-low') filtered.sort((a, b) => a.price - b.price);
+            if (appState.filters.sortBy === 'price-high') filtered.sort((a, b) => b.price - a.price);
+            if (appState.filters.sortBy === 'rating') filtered.sort((a, b) => b.rating - a.rating);
+
+            const brands = ['All', ...new Set(PRODUCTS.map(p => p.brand))];
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <!-- SHOP BREADCRUMB & TITLE -->
+                    <div class="mb-8">
+                        <div class="text-xs text-gray-500 mb-2">Home / <span class="text-brandDark font-semibold">Shop Products</span></div>
+                        <h1 class="text-3xl font-extrabold text-brandDark">Catalog Products</h1>
+                    </div>
+
+                    <div class="grid grid-cols-1 lg:grid-cols-4 gap-8">
+                        
+                        <!-- FILTERS SIDEBAR -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow h-fit space-y-6">
+                            <div class="flex items-center justify-between pb-4 border-b border-gray-100">
+                                <h3 class="font-bold text-brandDark flex items-center gap-2"><i class="fa-solid fa-filter text-brandTech"></i> Filters</h3>
+                                <button onclick="resetFilters()" class="text-xs text-brandTech hover:underline font-semibold">Reset All</button>
+                            </div>
+
+                            <!-- Category Filter -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-3">Category</label>
+                                <div class="space-y-2">
+                                    ${['All', 'Smartphones', 'Laptops & Tablets', 'Audio & Wearables', 'Accessories'].map(cat => `
+                                        <label class="flex items-center text-xs text-slate-700 cursor-pointer hover:text-brandTech">
+                                            <input type="radio" name="catFilter" ${appState.filters.category === cat ? 'checked' : ''} 
+                                                onclick="setFilter('category', '${cat}')" class="mr-2 text-brandTech focus:ring-brandTech">
+                                            ${cat}
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+
+                            <!-- Brand Filter -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-3">Brand</label>
+                                <select onchange="setFilter('brand', this.value)" class="w-full text-xs p-2.5 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none focus:border-brandTech">
+                                    ${brands.map(b => `<option value="${b}" ${appState.filters.brand === b ? 'selected' : ''}>${b}</option>`).join('')}
+                                </select>
+                            </div>
+
+                            <!-- Max Price Range Filter -->
+                            <div>
+                                <div class="flex justify-between items-center mb-2">
+                                    <label class="text-xs font-bold uppercase text-slate-500">Max Price</label>
+                                    <span class="text-xs font-bold text-brandTech">$${appState.filters.maxPrice}</span>
+                                </div>
+                                <input type="range" min="50" max="3000" step="50" value="${appState.filters.maxPrice}" 
+                                    oninput="setFilter('maxPrice', this.value)" class="w-full accent-brandTech cursor-pointer">
+                            </div>
+
+                            <!-- Minimum Rating Filter -->
+                            <div>
+                                <label class="block text-xs font-bold uppercase text-slate-500 mb-3">Minimum Rating</label>
+                                <div class="space-y-2">
+                                    ${[0, 4.0, 4.5, 4.8].map(r => `
+                                        <label class="flex items-center text-xs text-slate-700 cursor-pointer">
+                                            <input type="radio" name="ratingFilter" ${appState.filters.minRating === r ? 'checked' : ''} 
+                                                onclick="setFilter('minRating', ${r})" class="mr-2 text-brandTech">
+                                            ${r === 0 ? 'All Ratings' : `${r}+ Stars ⭐`}
+                                        </label>
+                                    `).join('')}
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- PRODUCT LIST GRID -->
+                        <div class="lg:col-span-3 space-y-6">
+                            <!-- Top Bar: Results Count & Sort -->
+                            <div class="bg-white rounded-xl p-4 border border-gray-100 custom-shadow flex flex-col sm:flex-row justify-between items-center gap-4">
+                                <span class="text-xs text-gray-500">Showing <strong class="text-brandDark">${filtered.length}</strong> tech gadgets</span>
+                                
+                                <div class="flex items-center gap-2">
+                                    <label class="text-xs font-medium text-gray-500">Sort By:</label>
+                                    <select onchange="setFilter('sortBy', this.value)" class="text-xs p-2 rounded-lg border border-gray-200 bg-gray-50 focus:outline-none">
+                                        <option value="featured" ${appState.filters.sortBy === 'featured' ? 'selected' : ''}>Featured</option>
+                                        <option value="price-low" ${appState.filters.sortBy === 'price-low' ? 'selected' : ''}>Price: Low to High</option>
+                                        <option value="price-high" ${appState.filters.sortBy === 'price-high' ? 'selected' : ''}>Price: High to Low</option>
+                                        <option value="rating" ${appState.filters.sortBy === 'rating' ? 'selected' : ''}>Highest Rated</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- Grid -->
+                            ${filtered.length > 0 ? `
+                                <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+                                    ${filtered.map(p => renderProductCard(p)).join('')}
+                                </div>
+                            ` : `
+                                <div class="bg-white rounded-2xl p-12 text-center border border-gray-100">
+                                    <i class="fa-solid fa-box-open text-4xl text-gray-300 mb-3"></i>
+                                    <h3 class="text-lg font-bold text-slate-700">No matching products found</h3>
+                                    <p class="text-xs text-gray-400 mt-1">Try adjusting your filters or price slider.</p>
+                                    <button onclick="resetFilters()" class="mt-4 px-4 py-2 bg-brandTech text-brandDark font-bold text-xs rounded-xl">Clear All Filters</button>
+                                </div>
+                            `}
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setFilter(key, val) {
+            appState.filters[key] = (key === 'maxPrice' || key === 'minRating') ? Number(val) : val;
+            renderApp();
+        }
+
+        function resetFilters() {
+            appState.filters = { category: 'All', brand: 'All', minRating: 0, maxPrice: 3000, sortBy: 'featured' };
+            renderApp();
+        }
+
+        // --- VIEW 3: PRODUCT DETAIL MODAL ---
+        function openProductModal(productId) {
+            const product = PRODUCTS.find(p => p.id === productId);
+            if (!product) return;
+
+            const modal = document.getElementById('productModal');
+            const content = document.getElementById('modalContent');
+
+            const related = PRODUCTS.filter(p => p.category === product.category && p.id !== product.id).slice(0, 2);
+
+            content.innerHTML = `
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-start">
+                    <!-- Image -->
+                    <div class="bg-gray-50 rounded-2xl p-4 border border-gray-100">
+                        <img src="${product.image}" alt="${product.name}" class="w-full h-72 object-cover rounded-xl shadow-md">
+                        <div class="mt-4 grid grid-cols-3 gap-2">
+                            <img src="${product.image}" class="h-16 w-full object-cover rounded-lg border-2 border-brandTech cursor-pointer">
+                            <div class="h-16 rounded-lg bg-slate-100 flex items-center justify-center text-xs text-gray-400 font-bold">+ 3 Photos</div>
+                        </div>
+                    </div>
+
+                    <!-- Details -->
+                    <div class="space-y-4">
+                        <div>
+                            <span class="text-xs font-bold uppercase text-brandTech tracking-wider">${product.category} &bull; ${product.brand}</span>
+                            <h2 class="text-2xl font-black text-brandDark mt-1">${product.name}</h2>
+                        </div>
+
+                        <div class="flex items-center gap-3">
+                            <div class="flex text-sm">${renderStars(product.rating)}</div>
+                            <span class="text-xs font-bold text-slate-600">${product.rating} / 5.0</span>
+                            <span class="text-xs text-gray-400">(${product.reviewsCount} customer reviews)</span>
+                        </div>
+
+                        <div class="flex items-baseline gap-3 pt-2">
+                            <span class="text-3xl font-black text-brandDark">$${product.price}</span>
+                            ${product.originalPrice ? `<span class="text-sm text-gray-400 line-through">$${product.originalPrice}</span>` : ''}
+                            <span class="text-xs font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded">In Stock (${product.stock} units)</span>
+                        </div>
+
+                        <p class="text-xs text-gray-600 leading-relaxed border-t border-gray-100 pt-3">
+                            High-performance build featuring precision engineering, premium materials, and full official NEXUS warranty protection.
+                        </p>
+
+                        <!-- Key Specifications -->
+                        <div>
+                            <h4 class="text-xs font-bold uppercase text-slate-700 mb-2">Specifications</h4>
+                            <ul class="grid grid-cols-2 gap-1.5 text-xs text-gray-600">
+                                ${product.specs.map(s => `<li class="flex items-center"><i class="fa-solid fa-check text-brandTech text-[10px] mr-1.5"></i> ${s}</li>`).join('')}
+                            </ul>
+                        </div>
+
+                        <!-- Add Actions -->
+                        <div class="pt-4 flex items-center gap-3">
+                            <div class="flex items-center border border-gray-200 rounded-xl bg-gray-50">
+                                <button onclick="adjustModalQty(-1)" class="px-3 py-2 text-gray-600 hover:text-brandDark font-bold">-</button>
+                                <span id="modalQty" class="px-3 py-2 text-xs font-bold">1</span>
+                                <button onclick="adjustModalQty(1)" class="px-3 py-2 text-gray-600 hover:text-brandDark font-bold">+</button>
+                            </div>
+
+                            <button onclick="addModalToCart('${product.id}')" class="flex-1 py-3 bg-brandTech text-brandDark hover:bg-brandHover font-extrabold text-xs rounded-xl shadow-md transition">
+                                Add To Shopping Cart
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Related Products -->
+                ${related.length > 0 ? `
+                    <div class="mt-8 pt-6 border-t border-gray-100">
+                        <h4 class="text-sm font-bold text-brandDark mb-4">Related Gadgets in ${product.category}</h4>
+                        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                            ${related.map(r => `
+                                <div onclick="openProductModal('${r.id}')" class="flex items-center gap-3 p-2 rounded-xl bg-gray-50 hover:bg-slate-100 cursor-pointer border border-gray-200 transition">
+                                    <img src="${r.image}" class="w-12 h-12 rounded-lg object-cover">
+                                    <div>
+                                        <h5 class="text-xs font-bold text-slate-800 line-clamp-1">${r.name}</h5>
+                                        <span class="text-xs font-extrabold text-brandDark">$${r.price}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    </div>
+                ` : ''}
+            `;
+
+            modal.classList.remove('hidden');
+        }
+
+        let modalQtyVal = 1;
+        function adjustModalQty(delta) {
+            modalQtyVal = Math.max(1, modalQtyVal + delta);
+            const el = document.getElementById('modalQty');
+            if (el) el.innerText = modalQtyVal;
+        }
+
+        function addModalToCart(productId) {
+            addToCart(productId, modalQtyVal);
+            modalQtyVal = 1;
+            closeProductModal();
+        }
+
+        function closeProductModal() {
+            document.getElementById('productModal').classList.add('hidden');
+        }
+
+        // --- VIEW 4: SHOPPING CART PAGE ---
+        function renderCartPage() {
+            const cartItems = appState.cart.map(item => {
+                const prod = PRODUCTS.find(p => p.id === item.productId);
+                return { ...prod, quantity: item.quantity };
+            }).filter(i => i.name);
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = appState.appliedPromo ? subtotal * 0.10 : 0;
+            const tax = (subtotal - discount) * 0.08; // 8% Tax
+            const shipping = subtotal > 500 || subtotal === 0 ? 0 : 25;
+            const total = subtotal - discount + tax + shipping;
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <h1 class="text-3xl font-extrabold text-brandDark mb-8">Shopping Cart</h1>
+
+                    ${cartItems.length === 0 ? `
+                        <div class="bg-white rounded-2xl p-12 text-center custom-shadow border border-gray-100">
+                            <i class="fa-solid fa-cart-arrow-down text-5xl text-gray-300 mb-4"></i>
+                            <h2 class="text-xl font-bold text-slate-800">Your shopping cart is empty</h2>
+                            <p class="text-xs text-gray-400 mt-1 mb-6">Looks like you haven't added any flagship tech yet.</p>
+                            <button onclick="navigateTo('shop')" class="px-6 py-3 bg-brandDark text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition">
+                                Start Shopping
+                            </button>
+                        </div>
+                    ` : `
+                        <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                            
+                            <!-- Items List -->
+                            <div class="lg:col-span-2 space-y-4">
+                                ${cartItems.map(item => `
+                                    <div class="bg-white rounded-2xl p-4 sm:p-6 border border-gray-100 custom-shadow flex flex-col sm:flex-row items-center justify-between gap-4">
+                                        <div class="flex items-center gap-4 w-full sm:w-auto">
+                                            <img src="${item.image}" alt="${item.name}" class="w-20 h-20 rounded-xl object-cover bg-gray-50">
+                                            <div>
+                                                <span class="text-[10px] font-bold text-brandTech uppercase">${item.brand}</span>
+                                                <h3 class="text-sm font-bold text-slate-800 line-clamp-1">${item.name}</h3>
+                                                <span class="text-xs text-gray-400">$${item.price} each</span>
+                                            </div>
+                                        </div>
+
+                                        <div class="flex items-center justify-between sm:justify-end gap-6 w-full sm:w-auto border-t sm:border-t-0 pt-3 sm:pt-0">
+                                            <!-- Quantity controls -->
+                                            <div class="flex items-center border border-gray-200 rounded-xl bg-gray-50">
+                                                <button onclick="updateCartQty('${item.id}', -1)" class="px-3 py-1.5 text-gray-600 hover:text-brandDark font-bold">-</button>
+                                                <span class="px-3 py-1.5 text-xs font-bold">${item.quantity}</span>
+                                                <button onclick="updateCartQty('${item.id}', 1)" class="px-3 py-1.5 text-gray-600 hover:text-brandDark font-bold">+</button>
+                                            </div>
+
+                                            <span class="text-base font-black text-brandDark">$${(item.price * item.quantity).toFixed(2)}</span>
+
+                                            <button onclick="removeFromCart('${item.id}')" class="text-gray-400 hover:text-red-500 transition">
+                                                <i class="fa-solid fa-trash-can"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <!-- Summary Sidebar -->
+                            <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow h-fit space-y-6">
+                                <h3 class="font-bold text-brandDark text-lg border-b border-gray-100 pb-3">Order Summary</h3>
+
+                                <!-- Coupon -->
+                                <div>
+                                    <label class="block text-xs font-bold uppercase text-slate-500 mb-2">Promo Code</label>
+                                    <div class="flex gap-2">
+                                        <input type="text" id="promoCodeInput" placeholder="NEXUS2026" class="w-full px-3 py-2 text-xs rounded-lg border border-gray-200 uppercase focus:outline-none focus:border-brandTech">
+                                        <button onclick="applyPromoCode()" class="px-4 py-2 bg-slate-800 text-white text-xs font-bold rounded-lg hover:bg-brandDark transition">Apply</button>
+                                    </div>
+                                    ${appState.appliedPromo ? '<span class="block text-[11px] text-emerald-600 font-bold mt-1">✓ 10% Discount Applied!</span>' : ''}
+                                </div>
+
+                                <div class="space-y-2.5 text-xs text-slate-600 pt-2 border-t border-gray-100">
+                                    <div class="flex justify-between">
+                                        <span>Subtotal</span>
+                                        <span class="font-bold">$${subtotal.toFixed(2)}</span>
+                                    </div>
+                                    ${discount > 0 ? `
+                                        <div class="flex justify-between text-emerald-600 font-bold">
+                                            <span>Promo Discount (10%)</span>
+                                            <span>-$${discount.toFixed(2)}</span>
+                                        </div>
+                                    ` : ''}
+                                    <div class="flex justify-between">
+                                        <span>Estimated Tax (8%)</span>
+                                        <span class="font-bold">$${tax.toFixed(2)}</span>
+                                    </div>
+                                    <div class="flex justify-between">
+                                        <span>Shipping Fee</span>
+                                        <span class="font-bold">${shipping === 0 ? '<span class="text-emerald-600 font-extrabold">FREE</span>' : '$' + shipping.toFixed(2)}</span>
+                                    </div>
+                                    <div class="flex justify-between text-base font-black text-brandDark pt-3 border-t border-gray-100">
+                                        <span>Total</span>
+                                        <span>$${total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+
+                                <button onclick="navigateTo('checkout')" class="w-full py-3.5 bg-brandTech text-brandDark font-black text-xs uppercase tracking-wider rounded-xl hover:bg-brandHover shadow-lg transition">
+                                    Proceed To Checkout &rarr;
+                                </button>
+                            </div>
+                        </div>
+                    `}
+                </div>
+            `;
+        }
+
+        // --- VIEW 5: CHECKOUT PAGE ---
+        function renderCheckoutPage() {
+            const cartItems = appState.cart.map(item => {
+                const prod = PRODUCTS.find(p => p.id === item.productId);
+                return { ...prod, quantity: item.quantity };
+            }).filter(i => i.name);
+
+            const subtotal = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            const discount = appState.appliedPromo ? subtotal * 0.10 : 0;
+            const tax = (subtotal - discount) * 0.08;
+            const shipping = subtotal > 500 || subtotal === 0 ? 0 : 25;
+            const total = subtotal - discount + tax + shipping;
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <h1 class="text-3xl font-extrabold text-brandDark mb-8">Secure Checkout</h1>
+
+                    <form onsubmit="handlePlaceOrder(event)" class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                        
+                        <!-- Shipping & Payment Form -->
+                        <div class="lg:col-span-2 space-y-6">
+                            
+                            <!-- Step 1: Shipping Address -->
+                            <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow space-y-4">
+                                <h3 class="font-bold text-brandDark text-base flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-brandTech text-brandDark text-xs flex items-center justify-center font-black">1</span>
+                                    Shipping Information
+                                </h3>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">Full Name</label>
+                                        <input type="text" required value="${appState.user.name}" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">Email Address</label>
+                                        <input type="email" required value="${appState.user.email}" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div class="sm:col-span-2">
+                                        <label class="block font-bold text-slate-600 mb-1">Street Address</label>
+                                        <input type="text" required value="${appState.user.savedAddress}" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">Phone Number</label>
+                                        <input type="text" required value="${appState.user.phone}" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">Zip / Postal Code</label>
+                                        <input type="text" required value="94016" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Step 2: Payment Method -->
+                            <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow space-y-4">
+                                <h3 class="font-bold text-brandDark text-base flex items-center gap-2">
+                                    <span class="w-6 h-6 rounded-full bg-brandTech text-brandDark text-xs flex items-center justify-center font-black">2</span>
+                                    Payment Gateway Simulation
+                                </h3>
+
+                                <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+                                    <label class="border-2 border-brandTech bg-brandTech/5 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer">
+                                        <input type="radio" name="payment" checked class="hidden">
+                                        <i class="fa-solid fa-credit-card text-lg text-brandDark mb-1"></i>
+                                        <span class="text-[11px] font-bold text-brandDark">Credit Card</span>
+                                    </label>
+                                    <label class="border border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-brandTech">
+                                        <input type="radio" name="payment" class="hidden">
+                                        <i class="fa-solid fa-qrcode text-lg text-slate-600 mb-1"></i>
+                                        <span class="text-[11px] font-bold text-slate-600">UPI / QR</span>
+                                    </label>
+                                    <label class="border border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-brandTech">
+                                        <input type="radio" name="payment" class="hidden">
+                                        <i class="fa-brands fa-paypal text-lg text-slate-600 mb-1"></i>
+                                        <span class="text-[11px] font-bold text-slate-600">PayPal</span>
+                                    </label>
+                                    <label class="border border-gray-200 rounded-xl p-3 flex flex-col items-center justify-center cursor-pointer hover:border-brandTech">
+                                        <input type="radio" name="payment" class="hidden">
+                                        <i class="fa-solid fa-truck text-lg text-slate-600 mb-1"></i>
+                                        <span class="text-[11px] font-bold text-slate-600">COD</span>
+                                    </label>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs pt-2">
+                                    <div class="sm:col-span-2">
+                                        <label class="block font-bold text-slate-600 mb-1">Card Number</label>
+                                        <input type="text" required placeholder="4532 &bull;&bull;&bull;&bull; &bull;&bull;&bull;&bull; 8892" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">Expiry Date</label>
+                                        <input type="text" required placeholder="08 / 28" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                    <div>
+                                        <label class="block font-bold text-slate-600 mb-1">CVV Security Code</label>
+                                        <input type="password" required maxlength="4" placeholder="123" class="w-full p-2.5 rounded-lg border border-gray-200 focus:outline-none focus:border-brandTech">
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Order Summary -->
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow h-fit space-y-4">
+                            <h3 class="font-bold text-brandDark text-base border-b border-gray-100 pb-3">Final Review</h3>
+                            
+                            <div class="max-h-60 overflow-y-auto space-y-3 pr-1">
+                                ${cartItems.map(item => `
+                                    <div class="flex items-center justify-between text-xs">
+                                        <div class="flex items-center gap-2">
+                                            <span class="font-bold text-brandTech">${item.quantity}x</span>
+                                            <span class="line-clamp-1 text-slate-700 max-w-[140px]">${item.name}</span>
+                                        </div>
+                                        <span class="font-bold text-slate-800">$${(item.price * item.quantity).toFixed(2)}</span>
+                                    </div>
+                                `).join('')}
+                            </div>
+
+                            <div class="border-t border-gray-100 pt-3 space-y-2 text-xs">
+                                <div class="flex justify-between text-gray-500">
+                                    <span>Subtotal</span>
+                                    <span>$${subtotal.toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between text-gray-500">
+                                    <span>Tax & Shipping</span>
+                                    <span>$${(tax + shipping).toFixed(2)}</span>
+                                </div>
+                                <div class="flex justify-between text-base font-black text-brandDark pt-2 border-t border-gray-100">
+                                    <span>Total Payable</span>
+                                    <span>$${total.toFixed(2)}</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-4 bg-brandDark text-white font-black text-xs uppercase tracking-wider rounded-xl hover:bg-slate-800 shadow-xl transition">
+                                <i class="fa-solid fa-lock mr-2"></i> Pay & Place Order
+                            </button>
+                        </div>
+                    </form>
+                </div>
+            `;
+        }
+
+        // --- VIEW 6: USER ACCOUNT PAGE ---
+        function renderAccountPage() {
+            const activeTab = appState.subTab || 'profile';
+
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+                    <div class="bg-brandDark text-white rounded-3xl p-6 sm:p-8 mb-8 flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="flex items-center gap-4">
+                            <div class="w-16 h-16 rounded-full bg-brandTech text-brandDark font-black text-2xl flex items-center justify-center">
+                                ${appState.user.name.charAt(0)}
+                            </div>
+                            <div>
+                                <h1 class="text-2xl font-bold">${appState.user.name}</h1>
+                                <p class="text-xs text-brandTech">${appState.user.email}</p>
+                            </div>
+                        </div>
+                        <button onclick="handleLogout()" class="px-4 py-2 bg-slate-800 hover:bg-red-600 text-white text-xs font-bold rounded-xl transition">
+                            Log Out
+                        </button>
+                    </div>
+
+                    <!-- Navigation Tabs -->
+                    <div class="flex border-b border-gray-200 mb-8 gap-4 overflow-x-auto hide-scrollbar text-sm">
+                        <button onclick="navigateTo('account', 'profile')" class="pb-3 font-bold ${activeTab === 'profile' ? 'text-brandTech border-b-2 border-brandTech' : 'text-gray-500'}">Profile Info</button>
+                        <button onclick="navigateTo('account', 'orders')" class="pb-3 font-bold ${activeTab === 'orders' ? 'text-brandTech border-b-2 border-brandTech' : 'text-gray-500'}">Order History (${appState.orders.length})</button>
+                        <button onclick="navigateTo('account', 'wishlist')" class="pb-3 font-bold ${activeTab === 'wishlist' ? 'text-brandTech border-b-2 border-brandTech' : 'text-gray-500'}">Saved Wishlist (${appState.wishlist.length})</button>
+                    </div>
+
+                    <!-- Tab Content -->
+                    ${activeTab === 'profile' ? `
+                        <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow max-w-2xl space-y-4">
+                            <h3 class="font-bold text-brandDark text-lg">Personal Details</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 text-xs">
+                                <div><span class="block text-gray-400 font-bold uppercase mb-1">Full Name</span><span class="font-bold text-slate-800">${appState.user.name}</span></div>
+                                <div><span class="block text-gray-400 font-bold uppercase mb-1">Email</span><span class="font-bold text-slate-800">${appState.user.email}</span></div>
+                                <div><span class="block text-gray-400 font-bold uppercase mb-1">Phone</span><span class="font-bold text-slate-800">${appState.user.phone}</span></div>
+                                <div class="sm:col-span-2"><span class="block text-gray-400 font-bold uppercase mb-1">Default Address</span><span class="font-bold text-slate-800">${appState.user.savedAddress}</span></div>
+                            </div>
+                        </div>
+                    ` : ''}
+
+                    ${activeTab === 'orders' ? `
+                        <div class="space-y-4">
+                            ${appState.orders.map(order => `
+                                <div class="bg-white rounded-2xl p-6 border border-gray-100 custom-shadow space-y-4">
+                                    <div class="flex flex-col sm:flex-row justify-between border-b border-gray-100 pb-3 text-xs gap-2">
+                                        <div>
+                                            <span class="font-bold text-slate-800">Order #${order.id}</span>
+                                            <span class="text-gray-400 block">${order.date}</span>
+                                        </div>
+                                        <div>
+                                            <span class="px-2.5 py-1 bg-emerald-100 text-emerald-800 font-bold rounded-full">${order.status}</span>
+                                        </div>
+                                    </div>
+                                    <div class="space-y-2">
+                                        ${order.items.map(i => `
+                                            <div class="flex justify-between text-xs text-slate-700">
+                                                <span>${i.qty}x ${i.name}</span>
+                                                <span class="font-bold">$${i.price}</span>
+                                            </div>
+                                        `).join('')}
+                                    </div>
+                                    <div class="border-t border-gray-100 pt-3 flex justify-between items-center">
+                                        <span class="text-xs font-bold text-slate-500">Total Charged</span>
+                                        <span class="text-base font-black text-brandDark">$${order.total.toFixed(2)}</span>
+                                    </div>
+                                </div>
+                            `).join('')}
+                        </div>
+                    ` : ''}
+
+                    ${activeTab === 'wishlist' ? `
+                        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                            ${appState.wishlist.map(id => {
+                                const prod = PRODUCTS.find(p => p.id === id);
+                                return prod ? renderProductCard(prod) : '';
+                            }).join('')}
+                        </div>
+                    ` : ''}
+                </div>
+            `;
+        }
+
+        // --- VIEW 7: ABOUT US PAGE ---
+        function renderAboutPage() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-16">
+                    <div class="text-center max-w-3xl mx-auto space-y-4">
+                        <span class="text-xs font-bold uppercase text-brandTech tracking-widest">Our Story & Tech Philosophy</span>
+                        <h1 class="text-4xl font-extrabold text-brandDark">Pioneering Access to Next-Gen Electronics</h1>
+                        <p class="text-gray-600 text-sm leading-relaxed">
+                            Founded in 2024, NEXUS TECH was built with a simple mission: to bridge the gap between groundbreaking innovations and everyday consumers with absolute transparency and unmatched speed.
+                        </p>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 custom-shadow text-center space-y-3">
+                            <div class="w-12 h-12 bg-brandTech/10 rounded-xl text-brandTech font-black text-2xl flex items-center justify-center mx-auto">
+                                <i class="fa-solid fa-shield-halved"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-brandDark">100% Genuine Tech</h3>
+                            <p class="text-xs text-gray-500">Directly sourced from verified flagship manufacturers with original brand warranties.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 custom-shadow text-center space-y-3">
+                            <div class="w-12 h-12 bg-brandTech/10 rounded-xl text-brandTech font-black text-2xl flex items-center justify-center mx-auto">
+                                <i class="fa-solid fa-bolt"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-brandDark">Express Dispatch</h3>
+                            <p class="text-xs text-gray-500">Same-day processing and priority global shipping network for minimal wait times.</p>
+                        </div>
+                        <div class="bg-white p-8 rounded-2xl border border-gray-100 custom-shadow text-center space-y-3">
+                            <div class="w-12 h-12 bg-brandTech/10 rounded-xl text-brandTech font-black text-2xl flex items-center justify-center mx-auto">
+                                <i class="fa-solid fa-headset"></i>
+                            </div>
+                            <h3 class="text-base font-bold text-brandDark">24/7 Tech Support</h3>
+                            <p class="text-xs text-gray-500">Dedicated gadget specialists ready to assist with setup, specs, and order queries.</p>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        // --- VIEW 8: CONTACT US PAGE ---
+        function renderContactPage() {
+            return `
+                <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+                        <!-- Contact Info -->
+                        <div class="space-y-6">
+                            <span class="text-xs font-bold uppercase text-brandTech tracking-widest">Get In Touch</span>
+                            <h1 class="text-3xl font-extrabold text-brandDark">We're Here to Help You Upgrade</h1>
+                            <p class="text-xs text-gray-600 leading-relaxed">
+                                Have questions regarding tech compatibility, order status, or business bulk buying? Drop us a message!
+                            </p>
+
+                            <div class="space-y-4 text-xs pt-4">
+                                <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100">
+                                    <i class="fa-solid fa-location-dot text-xl text-brandTech"></i>
+                                    <div>
+                                        <span class="font-bold text-brandDark block">HQ Store Location</span>
+                                        <span class="text-gray-500">742 Tech Boulevard, Silicon Valley, CA 94016</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100">
+                                    <i class="fa-solid fa-phone text-xl text-brandTech"></i>
+                                    <div>
+                                        <span class="font-bold text-brandDark block">Call Support</span>
+                                        <span class="text-gray-500">+1 (800) 555-NEXUS</span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-4 bg-white p-4 rounded-xl border border-gray-100">
+                                    <i class="fa-solid fa-envelope text-xl text-brandTech"></i>
+                                    <div>
+                                        <span class="font-bold text-brandDark block">Email Inquiry</span>
+                                        <span class="text-gray-500">support@nexus-tech.com</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Form -->
+                        <div class="bg-white rounded-2xl p-8 border border-gray-100 custom-shadow">
+                            <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Your Name</label>
+                                    <input type="text" required placeholder="John Doe" class="w-full p-2.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-brandTech">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Email Address</label>
+                                    <input type="email" required placeholder="john@example.com" class="w-full p-2.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-brandTech">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Message Subject</label>
+                                    <input type="text" required placeholder="Order inquiry or technical spec..." class="w-full p-2.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-brandTech">
+                                </div>
+                                <div>
+                                    <label class="block text-xs font-bold text-slate-600 mb-1">Message</label>
+                                    <textarea required rows="4" placeholder="How can our team assist you?" class="w-full p-2.5 rounded-lg border border-gray-200 text-xs focus:outline-none focus:border-brandTech"></textarea>
+                                </div>
+                                <button type="submit" class="w-full py-3 bg-brandDark text-white font-bold text-xs rounded-xl hover:bg-slate-800 transition">
+                                    Send Inquiry Message
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        /* ==========================================================================
+           6. USER INTERACTION & HANDLERS
+           ========================================================================== */
+        
+        function addToCart(productId, qty = 1) {
+            const existing = appState.cart.find(item => item.productId === productId);
+            if (existing) {
+                existing.quantity += qty;
+            } else {
+                appState.cart.push({ productId, quantity: qty });
+            }
+            saveState();
+            const prod = PRODUCTS.find(p => p.id === productId);
+            showToast(`Added ${prod ? prod.name : 'item'} to cart!`, 'success');
+        }
+
+        function updateCartQty(productId, delta) {
+            const item = appState.cart.find(i => i.productId === productId);
+            if (item) {
+                item.quantity += delta;
+                if (item.quantity <= 0) {
+                    appState.cart = appState.cart.filter(i => i.productId !== productId);
+                }
+                saveState();
+                renderApp();
+            }
+        }
+
+        function removeFromCart(productId) {
+            appState.cart = appState.cart.filter(i => i.productId !== productId);
+            saveState();
+            renderApp();
+            showToast('Item removed from cart', 'warning');
+        }
+
+        function toggleWishlist(productId, e) {
+            if (e) e.stopPropagation();
+            if (appState.wishlist.includes(productId)) {
+                appState.wishlist = appState.wishlist.filter(id => id !== productId);
+                showToast('Removed from Wishlist');
+            } else {
+                appState.wishlist.push(productId);
+                showToast('Saved to Wishlist!', 'success');
+            }
+            saveState();
+            renderApp();
+        }
+
+        function applyPromoCode() {
+            const val = document.getElementById('promoCodeInput').value.trim();
+            if (val === 'NEXUS2026') {
+                appState.appliedPromo = 'NEXUS2026';
+                showToast('Promo code applied successfully!', 'success');
+                renderApp();
+            } else {
+                showToast('Invalid Promo Code', 'warning');
+            }
+        }
+
+        function handlePlaceOrder(e) {
+            e.preventDefault();
+            const orderId = 'NEX-' + Math.floor(100000 + Math.random() * 900000);
+            
+            const cartItems = appState.cart.map(item => {
+                const prod = PRODUCTS.find(p => p.id === item.productId);
+                return { name: prod.name, qty: item.quantity, price: prod.price };
+            });
+
+            const subtotal = cartItems.reduce((s, i) => s + (i.price * i.qty), 0);
+            const discount = appState.appliedPromo ? subtotal * 0.10 : 0;
+            const total = (subtotal - discount) * 1.08 + (subtotal > 500 ? 0 : 25);
+
+            appState.orders.unshift({
+                id: orderId,
+                date: new Date().toISOString().split('T')[0],
+                status: 'Processing',
+                total: total,
+                items: cartItems
+            });
+
+            appState.cart = [];
+            appState.appliedPromo = null;
+            saveState();
+
+            showToast(`Order #${orderId} Placed Successfully!`, 'success');
+            navigateTo('account', 'orders');
+        }
+
+        // Live Search Handler
+        function handleSearchInput(e) {
+            const query = e.target.value.toLowerCase().trim();
+            const dropdown = document.getElementById('searchResultsDropdown');
+            const clearBtn = document.getElementById('searchClearBtn');
+
+            if (!query) {
+                dropdown.classList.add('hidden');
+                clearBtn.classList.add('hidden');
+                return;
+            }
+
+            clearBtn.classList.remove('hidden');
+            const results = PRODUCTS.filter(p => p.name.toLowerCase().includes(query) || p.category.toLowerCase().includes(query) || p.brand.toLowerCase().includes(query));
+
+            if (results.length > 0) {
+                dropdown.innerHTML = results.map(r => `
+                    <div onclick="openProductModal('${r.id}'); clearSearch();" class="flex items-center gap-3 p-2 hover:bg-slate-50 cursor-pointer rounded-lg border-b border-gray-50 last:border-0">
+                        <img src="${r.image}" class="w-10 h-10 object-cover rounded">
+                        <div>
+                            <div class="text-xs font-bold text-slate-800">${r.name}</div>
+                            <div class="text-[10px] text-brandTech">$${r.price} &bull; ${r.category}</div>
+                        </div>
+                    </div>
+                `).join('');
+                dropdown.classList.remove('hidden');
+            } else {
+                dropdown.innerHTML = '<div class="p-3 text-xs text-gray-400 text-center">No gadgets found.</div>';
+                dropdown.classList.remove('hidden');
+            }
+        }
+
+        function clearSearch() {
+            document.getElementById('searchInput').value = '';
+            document.getElementById('searchResultsDropdown').classList.add('hidden');
+            document.getElementById('searchClearBtn').classList.add('hidden');
+        }
+
+        // Auth Modal Handlers
+        function openAuthModal(tab = 'login') {
+            switchAuthTab(tab);
+            document.getElementById('authModal').classList.remove('hidden');
+        }
+
+        function closeAuthModal() {
+            document.getElementById('authModal').classList.add('hidden');
+        }
+
+        function switchAuthTab(tab) {
+            const loginForm = document.getElementById('loginForm');
+            const regForm = document.getElementById('registerForm');
+            const loginBtn = document.getElementById('tabLoginBtn');
+            const regBtn = document.getElementById('tabRegisterBtn');
+
+            if (tab === 'login') {
+                loginForm.classList.remove('hidden');
+                regForm.classList.add('hidden');
+                loginBtn.className = 'flex-1 pb-3 text-center font-bold text-brandDark border-b-2 border-brandTech';
+                regBtn.className = 'flex-1 pb-3 text-center font-bold text-gray-400 border-b-2 border-transparent';
+            } else {
+                regForm.classList.remove('hidden');
+                loginForm.classList.add('hidden');
+                regBtn.className = 'flex-1 pb-3 text-center font-bold text-brandDark border-b-2 border-brandTech';
+                loginBtn.className = 'flex-1 pb-3 text-center font-bold text-gray-400 border-b-2 border-transparent';
+            }
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            appState.user.isLoggedIn = true;
+            saveState();
+            closeAuthModal();
+            showToast('Welcome back, ' + appState.user.name, 'success');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            const name = document.getElementById('regName').value;
+            const email = document.getElementById('regEmail').value;
+            appState.user = { name, email, phone: '+1 (555) 000-0000', savedAddress: 'Not Set', isLoggedIn: true };
+            saveState();
+            closeAuthModal();
+            showToast('Account created successfully!', 'success');
+        }
+
+        function handleLogout() {
+            appState.user.isLoggedIn = false;
+            saveState();
+            showToast('Logged out');
+            navigateTo('home');
+        }
+
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('Message sent! Our support team will reply within 2 hours.', 'success');
+            e.target.reset();
+        }
+
+        /* ==========================================================================
+           7. INITIALIZATION ON WINDOW LOAD
+           ========================================================================== */
+        window.onload = function() {
+            renderApp();
+        };
+    </script>
+</body>
+</html>
